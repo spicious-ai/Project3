@@ -3,11 +3,11 @@
 Wildfires - Project 3 Ideas
 
 -Map of wildfires for as much 
-	overlay maps - Map of average temperature 
-			rainfall 
-			population?
-			amount of wildlife 
-			stormwater runoff
+	overlay maps - Maps of average temperature, 
+			rainfall, 
+			population,
+			amount of wildlife, 
+			stormwater runoff,
 			humidity
 			
 			

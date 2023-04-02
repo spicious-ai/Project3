@@ -2,7 +2,7 @@
 
 Wildfires - Project 3 Ideas
 
--Map of wildfires 
+-Map of wildfires. 
 	Possible overlay maps - Maps of average temperature, 
 			rainfall, 
 			population,

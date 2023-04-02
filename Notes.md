@@ -18,10 +18,12 @@ Temperature map - 1995 - 2015
 
 Pick snapshots in time for certain years of data.
 
-1995
-2000
-2005
-2010
-2015
+1995,
+2000,
+2005,
+2010,
+2015,
 2020
 ?
+
+https://data-nifc.opendata.arcgis.com/datasets/nifc::inform-fire-occurrence-data-records/explore

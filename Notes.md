@@ -26,4 +26,6 @@ Pick snapshots in time for certain years of data.
 2020
 ?
 
+Incident records for all known fire occurrence in the United States shown as point locations. 
+Scroll down for GeoJSON file.
 https://data-nifc.opendata.arcgis.com/datasets/nifc::inform-fire-occurrence-data-records/explore

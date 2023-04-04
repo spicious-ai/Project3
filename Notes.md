@@ -31,8 +31,9 @@ Scroll down for GeoJSON file.
 https://data-nifc.opendata.arcgis.com/datasets/nifc::inform-fire-occurrence-data-records/explore
 
 Layers
-NWCG_GENERAL_CAUSE, split by artificial natural causes, a dropdown menu with each fire cause,
 
-FIRE_SIZE, 
+NWCG_GENERAL_CAUSE, split by artificial natural causes. Create a dropdown menu with each fire cause.
 
-FIRE_YEAR, 
+FIRE_SIZE
+
+FIRE_YEAR

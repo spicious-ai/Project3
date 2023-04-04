@@ -9,7 +9,7 @@ NWCG_GENERAL_CAUSE, split by artificial/natural causes. Create a dropdown menu w
 
 FIRE_SIZE
 
-FIRE_YEAR
+FIRE_YEAR - filterable by year.
 
 ____________________________________________________________________________________________________
 

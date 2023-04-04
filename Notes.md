@@ -12,7 +12,7 @@ NWCG_GENERAL_CAUSE, split by artificial/natural causes. Create a dropdown menu w
 
 FIRE_SIZE
 
-FIRE_YEAR - filterable by year with slider.
+FIRE_YEAR - filter by year with slider.
 
 ____________________________________________________________________________________________________
 
@@ -22,18 +22,6 @@ https://data-nifc.opendata.arcgis.com/datasets/nifc::inform-fire-occurrence-data
 
 ___________________________________________________________________________________________________
 
-
-Pick snapshots in time for certain years of data?
-
-1995,
-2000,
-2005,
-2010,
-2015,
-2020
-
-__________________________________________________________________________________________________
-
 -Map of wildfires. 
 	Possible overlay maps - Maps of average temperature, 
 			rainfall, 
@@ -41,12 +29,6 @@ ________________________________________________________________________________
 			amount of wildlife, 
 			stormwater runoff,
 			humidity
-			
-			
-			
-			
-Wildfire map - 1992 - 2015
-Temperature map - 1995 - 2015
 
 
 

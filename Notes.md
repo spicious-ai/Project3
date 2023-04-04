@@ -1,6 +1,8 @@
 # Project3 
 
-Wildfires
+United States Wildfires
+2.3 Million US Wildfires (1992-2020) 6th Edition
+https://www.kaggle.com/datasets/behroozsohrabi/us-wildfire-records-6th-edition
 
 
 Map Layers
@@ -9,7 +11,7 @@ NWCG_GENERAL_CAUSE, split by artificial/natural causes. Create a dropdown menu w
 
 FIRE_SIZE
 
-FIRE_YEAR - filterable by year.
+FIRE_YEAR - filterable by year with slider.
 
 ____________________________________________________________________________________________________
 

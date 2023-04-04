@@ -10,6 +10,9 @@ FIRE_SIZE
 FIRE_YEAR
 
 
+
+
+
 Wildfires - Project 3 Ideas 
 
 -Map of wildfires. 

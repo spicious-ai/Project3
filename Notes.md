@@ -17,6 +17,7 @@ FIRE_YEAR - filter by year with slider.
 ____________________________________________________________________________________________________
 
 National Interagency Fire Center 
+
 Incident records for all known fire occurrence in the United States shown as point locations. 
 Scroll down for GeoJSON file.
 https://data-nifc.opendata.arcgis.com/datasets/nifc::inform-fire-occurrence-data-records/explore

@@ -1,5 +1,15 @@
 # Project3
 
+
+Layers
+
+NWCG_GENERAL_CAUSE, split by artificial/natural causes. Create a dropdown menu with each fire cause.
+
+FIRE_SIZE
+
+FIRE_YEAR
+
+
 Wildfires - Project 3 Ideas 
 
 -Map of wildfires. 
@@ -30,10 +40,3 @@ Incident records for all known fire occurrence in the United States shown as poi
 Scroll down for GeoJSON file.
 https://data-nifc.opendata.arcgis.com/datasets/nifc::inform-fire-occurrence-data-records/explore
 
-Layers
-
-NWCG_GENERAL_CAUSE, split by artificial natural causes. Create a dropdown menu with each fire cause.
-
-FIRE_SIZE
-
-FIRE_YEAR

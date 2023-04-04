@@ -1,6 +1,6 @@
 # Project3
 
-Wildfires - Project 3 Ideas
+Wildfires - Project 3 Ideas 
 
 -Map of wildfires. 
 	Possible overlay maps - Maps of average temperature, 
@@ -30,12 +30,7 @@ Incident records for all known fire occurrence in the United States shown as poi
 Scroll down for GeoJSON file.
 https://data-nifc.opendata.arcgis.com/datasets/nifc::inform-fire-occurrence-data-records/explore
 
-
-Fire size, fire size class, 
-
-Layer: fire size
-Layer: agency fighting the fire
-Layer: cause of fire
-Layer: duration
-Layer: natural causes,
-Layer: artificial
+Layers
+NWCG_GENERAL_CAUSE, split by artificial natural causes, a dropdown menu with each fire cause,
+FIRE_SIZE, 
+FIRE_YEAR, 

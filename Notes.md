@@ -1,4 +1,6 @@
-# Project3
+# Project3 
+
+Wildfires
 
 
 Layers
@@ -9,11 +11,25 @@ FIRE_SIZE
 
 FIRE_YEAR
 
+____________________________________________________________________________________________________
+
+Incident records for all known fire occurrence in the United States shown as point locations. 
+Scroll down for GeoJSON file.
+https://data-nifc.opendata.arcgis.com/datasets/nifc::inform-fire-occurrence-data-records/explore
+
+___________________________________________________________________________________________________
 
 
+Pick snapshots in time for certain years of data?
 
+1995,
+2000,
+2005,
+2010,
+2015,
+2020
 
-Wildfires - Project 3 Ideas 
+__________________________________________________________________________________________________
 
 -Map of wildfires. 
 	Possible overlay maps - Maps of average temperature, 
@@ -29,17 +45,6 @@ Wildfires - Project 3 Ideas
 Wildfire map - 1992 - 2015
 Temperature map - 1995 - 2015
 
-Pick snapshots in time for certain years of data.
 
-1995,
-2000,
-2005,
-2010,
-2015,
-2020
-?
 
-Incident records for all known fire occurrence in the United States shown as point locations. 
-Scroll down for GeoJSON file.
-https://data-nifc.opendata.arcgis.com/datasets/nifc::inform-fire-occurrence-data-records/explore
 

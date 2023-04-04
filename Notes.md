@@ -32,5 +32,7 @@ https://data-nifc.opendata.arcgis.com/datasets/nifc::inform-fire-occurrence-data
 
 Layers
 NWCG_GENERAL_CAUSE, split by artificial natural causes, a dropdown menu with each fire cause,
+
 FIRE_SIZE, 
+
 FIRE_YEAR, 

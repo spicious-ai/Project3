@@ -1,6 +1,7 @@
 # Project3 
 
 United States Wildfires
+
 2.3 Million US Wildfires (1992-2020) 6th Edition
 https://www.kaggle.com/datasets/behroozsohrabi/us-wildfire-records-6th-edition
 

@@ -52,7 +52,7 @@ def fires():
 
     """Return a list of all passenger names"""
     # Query all passengers
-    results = engine.execute('select FIRE_NAME, FIRE_YEAR, LATITUDE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE from fires where FIRE_YEAR = 2000 limit 100').all()
+    results = engine.execute('select FIRE_NAME, FIRE_YEAR, LATITUDE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE from fires where  FIRE_SIZE > 1000;').all()
 
 
     session.close()

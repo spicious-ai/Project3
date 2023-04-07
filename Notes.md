@@ -24,7 +24,7 @@ ________________________________________________________________________________
 			stormwater runoff,
 			humidity 
 
-**Create a marker bullet item indicating how many days the fire burned, defined as the number of days between the date the fire was discovered and the date on which the fire was declared contained or otherwise controlled.
+**Create a bullet item/marker indicating how many days the fire burned, defined as the number of days between the date the fire was discovered and the date on which the fire was declared contained or otherwise controlled.
 
 DISCOVERY_DATE Date on which the fire was discovered or confirmed to exist.
 

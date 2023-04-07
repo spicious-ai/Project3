@@ -47,18 +47,28 @@ def welcome():
 
 @app.route("/api/v1.0/fires.geojson", methods=['GET'])
 def fires():
-    # Create our session (link) from Python to the DB
+  # Create our session (link) from Python to the DB
     session = Session(engine)
 
-    """Return a list of all passenger names"""
-    # Query all passengers
-    results = engine.execute('select FIRE_NAME, FIRE_YEAR, LATITUDE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE from fires where  FIRE_SIZE > 1000;').all()
+    """Return a list of all fires"""
+  # Query all fires over 1000 acres
+    results = engine.execute('select FIRE_NAME, FIRE_YEAR, LATITUDE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE, NWCG_CAUSE_CLASSIFICATION from fires where  FIRE_SIZE > 1000;').all()
 
 
     session.close()
-    #all_names = list(np.ravel(results))
+#Description of all properties
+'''
+FIRE_NAME - Name of the incident, from the fire report (primary) or ICS-209 report (secondary).
+FIRE_YEAR - Calendar year in which the fire was discovered or confirmed to exist.
+LATITUDE - Latitude (NAD83) for point location of the fire (decimal degrees).
+LONGITUDE - Longitude (NAD83) for point location of the fire (decimal degrees).
+FIRE_SIZE - The estimate of acres within the final perimeter of the fire.
+NWCG_GENERAL_CAUSE - Event or circumstance that started a fire or set the stage for its occurrence (Arson/incendiarism, Debris and open burning, Equipment and vehicle use, Firearms and explosives use, Fireworks, Misuse of fire by a minor, Natural, Power generation/transmission/distribution, Railroad operations and maintenance, Recreation and ceremony, Smoking, Other causes, Missing data/not specified/undetermined).
+NWCG_CAUSE_CLASSIFICATION - Broad classification of the reason the fire occurred (Human, Natural, Missing data/not specified/undetermined).
+'''
+  # Organize information into geoJSON format
     all_fires = []
-    for FIRE_NAME, FIRE_YEAR, LATITUDE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE  in results:
+    for FIRE_NAME, FIRE_YEAR, LATITUDE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE, NWCG_CAUSE_CLASSIFICATION  in results:
         fire_dict = {
               "type": "Feature",
               "geometry": {
@@ -69,7 +79,8 @@ def fires():
                 "name": FIRE_NAME,
                 "year": FIRE_YEAR,
                 "size": FIRE_SIZE,
-                "cause": NWCG_GENERAL_CAUSE
+                "cause": NWCG_GENERAL_CAUSE, 
+                "cause_class": NWCG_CAUSE_CLASSIFICATION
                           }
             }
         all_fires.append(fire_dict)

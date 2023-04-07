@@ -895,8 +895,6 @@ causeSelect.onAdd = function(map) {
 };
 causeSelect.addTo(myMap);
 
-
-
 // Define function to update the map based on the selected cause
 function updateMap(selectedCause) {
   // Clear existing markers from the fireMarkers layer group
@@ -909,7 +907,7 @@ function updateMap(selectedCause) {
     // Only show markers that match the selected cause
     if (selectedCause === '' || fire.NWCG_GENERAL_CAUSE === selectedCause) {
       let marker = L.marker([fire.LATITUDE, fire.LONGITUDE]).addTo(fireMarkers);
-      marker.bindPopup('<b>' + fire.FIRE_NAME + '</b><br>Size: ' + fire.FIRE_SIZE + '<br>Cause: ' + fire.NWCG_GENERAL_CAUSE);
+      marker.bindPopup('<b>' + fire.FIRE_NAME + '</b><br>Size: ' + fire.FIRE_SIZE + ' acres' + '<br>Cause: ' + fire.NWCG_GENERAL_CAUSE);
     }
   }
 };

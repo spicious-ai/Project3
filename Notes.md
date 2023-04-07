@@ -27,4 +27,5 @@ ________________________________________________________________________________
 **Create a marker bullet item indicating how many days the fire burned, defined as the number of days between the date the fire was discovered and the date on which the fire was declared contained or otherwise controlled.
 
 DISCOVERY_DATE Date on which the fire was discovered or confirmed to exist.
+
 CONT_DATE Date on which the fire was declared contained or otherwise controlled (mm/dd/yyyy where mm=month, dd=day, and yyyy=year).

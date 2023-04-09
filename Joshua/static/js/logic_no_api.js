@@ -869,12 +869,20 @@ topo.addTo(myMap);
 
 
 
+//creating a custom fire marker icon
+
+var fireIcon = L.icon({
+  iconUrl: 'fireicon.png',
+  iconSize: [20, 30]
+});
+
+// Dropdown menu not working 
 // Create a new dropdown menu for filtering by cause
-let causeSelect = L.control({position: 'topright'});
-causeSelect.onAdd = function(map) {
+let selectedCause = L.control({position: 'topright'});
+selectedCause.onAdd = function(map) {
   let div = L.DomUtil.create('div', 'info legend');
   div.innerHTML = `
-    <select id='cause-select' onchange='updateMap(this.value)'>
+  <select id='cause-select' onchange='updateMap(this.value)'>
       <option value=''>All Causes</option>
       <option value='Arson/incendiarism'>Arson/incendiarism</option>
       <option value='Debris and open burning'>Debris and open burning</option>
@@ -885,7 +893,7 @@ causeSelect.onAdd = function(map) {
       <option value='Natural'>Natural</option>
       <option value='Power generation/transmission/distribution'>Power generation/transmission/distribution</option>
       <option value='Railroad operations and maintenance'>Railroad operations and maintenance</option>
-      <option value='Recreation and ceremony'>Recreation and ceremony</option>
+      <option value="Recreation and ceremony">Recreation and ceremony</option>
       <option value='Smoking'>Smoking</option>
       <option value='Other causes'>Other causes</option>
       <option value='Missing data/not specified/undetermined'>Missing data/not specified/undetermined</option>
@@ -893,24 +901,27 @@ causeSelect.onAdd = function(map) {
   `;
   return div;
 };
-causeSelect.addTo(myMap);
+selectedCause.addTo(myMap);
+updateMap('');
+
 
 // Define function to update the map based on the selected cause
 function updateMap(selectedCause) {
   // Clear existing markers from the fireMarkers layer group
   fireMarkers.clearLayers();
-
   // Loop through the wildfireData array and add markers to the map based on the selected cause
   for (let i = 0; i < wildfireData.length; i++) {
     let fire = wildfireData[i];
 
     // Only show markers that match the selected cause
     if (selectedCause === '' || fire.NWCG_GENERAL_CAUSE === selectedCause) {
-      let marker = L.marker([fire.LATITUDE, fire.LONGITUDE]).addTo(fireMarkers);
+      let marker = L.marker([fire.LATITUDE, fire.LONGITUDE],{icon:fireIcon}).addTo(fireMarkers);
       marker.bindPopup('<b>' + fire.FIRE_NAME + '</b><br>Size: ' + fire.FIRE_SIZE + ' acres' + '<br>Cause: ' + fire.NWCG_GENERAL_CAUSE);
     }
   }
 };
+
+
 
 
 //dropdown menu for filtering by year not working!!!!!
@@ -920,7 +931,7 @@ let yearSelect = L.control({position: 'topright'});
 yearSelect.onAdd = function(map) {
   let div = L.DomUtil.create('div', 'info legend');
   div.innerHTML = `
-  <select id='year-select' onchange='updateMap(this.value)'>
+  <select id='year-select' onchange='updateMapYear(this.value)'>
   <option value=''>All Years</option>
   <option value='1992'>1992</option>
   <option value='1993'>1993</option>
@@ -957,20 +968,24 @@ return div;
 };
 yearSelect.addTo(myMap);
 
-function updateMap(selectedYear) {
-  console.log('hello')
+// console.log("slected year", yearSelect);
+// console.log("Fire Year:", wildfireData[1].FIRE_YEAR);
+
+function updateMapYear(selectedYear) {
+
   // Clear existing markers from the fireMarkers layer group
   fireMarkers.clearLayers();
 
   // Loop through the wildfireData array and add markers to the map based on the selected year
   for (let i = 0; i < wildfireData.length; i++) {
     let fire = wildfireData[i];
+    selectedYear = Number(selectedYear)
 
-    // Only show markers that match the selected year
-    if (selectedYear === '' || fire.FIRE_YEAR === selectedYear) {
-      let marker = L.marker([fire.LATITUDE, fire.LONGITUDE]).addTo(fireMarkers);
+    if (!selectedYear || fire.FIRE_YEAR === selectedYear) {
+      let marker = L.marker([fire.LATITUDE, fire.LONGITUDE],{icon:fireIcon}).addTo(fireMarkers);
       marker.bindPopup('<b>' + fire.FIRE_NAME + '</b><br>Size: ' + fire.FIRE_SIZE + ' acres' + '<br>Cause: ' + fire.NWCG_GENERAL_CAUSE);
     }
   }
 };
-updateMap('');
+updateMapYear('');
+

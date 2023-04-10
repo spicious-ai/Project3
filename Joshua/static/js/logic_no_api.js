@@ -923,9 +923,6 @@ function updateMap(selectedCause) {
 
 
 
-
-//dropdown menu for filtering by year not working!!!!!
-
 // creating a dropdown menu for filtering by year
 let yearSelect = L.control({position: 'topright'});
 yearSelect.onAdd = function(map) {
@@ -967,9 +964,6 @@ yearSelect.onAdd = function(map) {
 return div;
 };
 yearSelect.addTo(myMap);
-
-// console.log("slected year", yearSelect);
-// console.log("Fire Year:", wildfireData[1].FIRE_YEAR);
 
 function updateMapYear(selectedYear) {
 

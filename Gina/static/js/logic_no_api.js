@@ -1,858 +1,858 @@
- //Create a map object
- let myMap = L.map("map", {
-  center: [37.09, -95.71],
-  zoom: 5
-});
- 
-//Create base tile layers
-let street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-});
+//Create a map object
+let myMap = L.map("map", {
+    center: [37.09, -95.71],
+    zoom: 5
+  });
+   
+  //Create base tile layers
+  let street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  });
+  
+  let topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+  });
+  
+  //Create baseMaps object
+  let baseMaps = {
+    "Street Map": street,
+    "Topographic Map": topo
+  };
 
-let topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-  attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-});
+  // Create slider
+  let slider = document.getElementById("slider");
+    noUiSlider.create(slider, {
+      start: [2000, 2022],
+      connect: true,
+      range: {
+        'min': 2000,
+        'max': 2022
+      },
+      format: {
+        to: function(value) {
+          return parseInt(value);
+        },
+        from: function(value) {
+          return parseInt(value);
+        }
+      }
+    });
+    
+    // Add range values to slider display
+    let rangeValues = [
+      document.getElementById('slider-range-value1'),
+      document.getElementById('slider-range-value2')
+    ];
+    
+    slider.noUiSlider.on('update', function(values, handle) {
+      rangeValues[handle].innerHTML = values[handle];
+    });
+  
 
-//Create baseMaps object
-let baseMaps = {
-  "Street Map": street,
-  "Topographic Map": topo
-};
+// // D3 call to API from local host to load data 
+//     // Store our API endpoint as queryUrl.
+//     var queryUrl = "http://localhost:8001/api/v1.0/fires.geojson";
 
+//     // Perform a GET request to the query URL/
+//     d3.json(queryUrl).then(function (data) {
+//         // Once we get a response, send the data.features object to the createFeatures function.
+//         console.log(data);
+//     });
+/////////////////////////////////////////////////////////////////////////
 
- //Create an array of the flask API fires //
- // UPDATE WITH API CALL //
-  let wildfireData = [
-    {
-      "FIRE_NAME": "CAMP", 
-      "FIRE_SIZE": 60.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 38.01722222, 
-      "LONGITUDE": -120.10111111, 
-      "NWCG_GENERAL_CAUSE": "Debris and open burning"
-    }, 
-    {
-      "FIRE_NAME": "KNIGHT", 
-      "FIRE_SIZE": 1.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 38.15166667, 
-      "LONGITUDE": -120.23472222, 
-      "NWCG_GENERAL_CAUSE": "Debris and open burning"
-    }, 
-    {
-      "FIRE_NAME": "CHARCOAL KILN", 
-      "FIRE_SIZE": 3.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 36.80083333, 
-      "LONGITUDE": -92.98416667, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "DOC TURNBOUGH", 
-      "FIRE_SIZE": 0.3, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 37.78472222, 
-      "LONGITUDE": -91.01861111, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "WATERFALL", 
-      "FIRE_SIZE": 4.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 36.9525, 
-      "LONGITUDE": -92.935, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "GRASSHOPPER", 
-      "FIRE_SIZE": 93.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 36.96777778, 
-      "LONGITUDE": -92.95166667, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "001 SHIRLEY ROAD", 
-      "FIRE_SIZE": 7.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 31.63333333, 
-      "LONGITUDE": -92.51666667, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "CROOKED", 
-      "FIRE_SIZE": 6.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 37.65138889, 
-      "LONGITUDE": -91.28111111, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "TRASH", 
-      "FIRE_SIZE": 1.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 36.81861111, 
-      "LONGITUDE": -92.05111111, 
-      "NWCG_GENERAL_CAUSE": "Debris and open burning"
-    }, 
-    {
-      "FIRE_NAME": "CAMARON", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 32.0, 
-      "LONGITUDE": -108.13444444, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "COLD", 
-      "FIRE_SIZE": 3.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 33.76666667, 
-      "LONGITUDE": -108.53555556, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "SOLDIER", 
-      "FIRE_SIZE": 100.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 32.95166667, 
-      "LONGITUDE": -107.80222222, 
-      "NWCG_GENERAL_CAUSE": "Natural"
-    }, 
-    {
-      "FIRE_NAME": "SIGNAL", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 32.91666667, 
-      "LONGITUDE": -108.16805556, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "SNOW", 
-      "FIRE_SIZE": 8.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 33.43444444, 
-      "LONGITUDE": -108.53527778, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "MEADOW", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 32.91666667, 
-      "LONGITUDE": -108.16805556, 
-      "NWCG_GENERAL_CAUSE": "Missing data/not specified/undetermined"
-    }, 
-    {
-      "FIRE_NAME": "IRON", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 32.9, 
-      "LONGITUDE": -107.80194444, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "CORRAL", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 32.91694444, 
-      "LONGITUDE": -108.13444444, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "MILL", 
-      "FIRE_SIZE": 10.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 32.88416667, 
-      "LONGITUDE": -108.235, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "LAKE", 
-      "FIRE_SIZE": 200.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 33.40166667, 
-      "LONGITUDE": -108.48527778, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "WALNUT", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 32.83388889, 
-      "LONGITUDE": -108.26861111, 
-      "NWCG_GENERAL_CAUSE": "Misuse of fire by a minor"
-    }, 
-    {
-      "FIRE_NAME": "ROARING", 
-      "FIRE_SIZE": 0.7, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 33.8675, 
-      "LONGITUDE": -108.96805556, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "HIGHWAY", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 34.03416667, 
-      "LONGITUDE": -108.65083333, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "HEADWATER", 
-      "FIRE_SIZE": 0.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 34.01805556, 
-      "LONGITUDE": -108.65166667, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "ORTEGA", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 33.6, 
-      "LONGITUDE": -117.43333333, 
-      "NWCG_GENERAL_CAUSE": "Equipment and vehicle use"
-    }, 
-    {
-      "FIRE_NAME": "MAXIMA", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 33.65, 
-      "LONGITUDE": -117.4, 
-      "NWCG_GENERAL_CAUSE": "Equipment and vehicle use"
-    }, 
-    {
-      "FIRE_NAME": "CALABASAS", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 31.385, 
-      "LONGITUDE": -111.055, 
-      "NWCG_GENERAL_CAUSE": "Missing data/not specified/undetermined"
-    }, 
-    {
-      "FIRE_NAME": "CORONA", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 31.825, 
-      "LONGITUDE": -110.715, 
-      "NWCG_GENERAL_CAUSE": "Equipment and vehicle use"
-    }, 
-    {
-      "FIRE_NAME": "JOSEPHINE", 
-      "FIRE_SIZE": 110.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 31.67666667, 
-      "LONGITUDE": -110.84, 
-      "NWCG_GENERAL_CAUSE": "Natural"
-    }, 
-    {
-      "FIRE_NAME": "CHIVA ROAD", 
-      "FIRE_SIZE": 4.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 32.30166667, 
-      "LONGITUDE": -110.57666667, 
-      "NWCG_GENERAL_CAUSE": "Smoking"
-    }, 
-    {
-      "FIRE_NAME": "SPROCKET", 
-      "FIRE_SIZE": 75.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 37.14555556, 
-      "LONGITUDE": -83.50111111, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "CLIFF", 
-      "FIRE_SIZE": 35.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 37.25, 
-      "LONGITUDE": -83.51916667, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "KEENS FORK", 
-      "FIRE_SIZE": 350.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 37.00138889, 
-      "LONGITUDE": -83.66805556, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "DOG POUND", 
-      "FIRE_SIZE": 120.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 37.15027778, 
-      "LONGITUDE": -83.66722222, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "SALEM", 
-      "FIRE_SIZE": 3.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 36.9675, 
-      "LONGITUDE": -84.46861111, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0014", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.9625, 
-      "LONGITUDE": -121.23611111, 
-      "NWCG_GENERAL_CAUSE": "Missing data/not specified/undetermined"
-    }, 
-    {
-      "FIRE_NAME": "0027", 
-      "FIRE_SIZE": 0.2, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.95444444, 
-      "LONGITUDE": -121.24277778, 
-      "NWCG_GENERAL_CAUSE": "Debris and open burning"
-    }, 
-    {
-      "FIRE_NAME": "MILLENIUM", 
-      "FIRE_SIZE": 7.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.41833333, 
-      "LONGITUDE": -82.28, 
-      "NWCG_GENERAL_CAUSE": "Debris and open burning"
-    }, 
-    {
-      "FIRE_NAME": "FAUSETT", 
-      "FIRE_SIZE": 1.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.45166667, 
-      "LONGITUDE": -81.915, 
-      "NWCG_GENERAL_CAUSE": "Power generation/transmission/distribution"
-    }, 
-    {
-      "FIRE_NAME": "FERRY STARKES", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.01722222, 
-      "LONGITUDE": -81.80166667, 
-      "NWCG_GENERAL_CAUSE": "Firearms and explosives use"
-    }, 
-    {
-      "FIRE_NAME": "MUD LAKE", 
-      "FIRE_SIZE": 0.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.13361111, 
-      "LONGITUDE": -81.51694444, 
-      "NWCG_GENERAL_CAUSE": "Missing data/not specified/undetermined"
-    }, 
-    {
-      "FIRE_NAME": "FERRY STAKES", 
-      "FIRE_SIZE": 0.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.00194444, 
-      "LONGITUDE": -81.80166667, 
-      "NWCG_GENERAL_CAUSE": "Missing data/not specified/undetermined"
-    }, 
-    {
-      "FIRE_NAME": "BOMBING RANGE", 
-      "FIRE_SIZE": 0.2, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.11777778, 
-      "LONGITUDE": -81.70055556, 
-      "NWCG_GENERAL_CAUSE": "Firearms and explosives use"
-    }, 
-    {
-      "FIRE_NAME": "SALT SPRINGS", 
-      "FIRE_SIZE": 4.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.33333333, 
-      "LONGITUDE": -81.71666667, 
-      "NWCG_GENERAL_CAUSE": "Missing data/not specified/undetermined"
-    }, 
-    {
-      "FIRE_NAME": "LAKE BRYANT", 
-      "FIRE_SIZE": 6.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.15194444, 
-      "LONGITUDE": -81.85138889, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "SANDY", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.06777778, 
-      "LONGITUDE": -81.66722222, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "MOSS BUFF 18", 
-      "FIRE_SIZE": 2.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.09666667, 
-      "LONGITUDE": -81.84833333, 
-      "NWCG_GENERAL_CAUSE": "Debris and open burning"
-    }, 
-    {
-      "FIRE_NAME": "BENTON", 
-      "FIRE_SIZE": 6179.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.46166667, 
-      "LONGITUDE": -82.60333333, 
-      "NWCG_GENERAL_CAUSE": "Debris and open burning"
-    }, 
-    {
-      "FIRE_NAME": "EATON", 
-      "FIRE_SIZE": 0.2, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.23277778, 
-      "LONGITUDE": -81.86833333, 
-      "NWCG_GENERAL_CAUSE": "Missing data/not specified/undetermined"
-    }, 
-    {
-      "FIRE_NAME": "NATURAL LITE", 
-      "FIRE_SIZE": 2.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.32666667, 
-      "LONGITUDE": -82.605, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "MOSS BLUFF 21", 
-      "FIRE_SIZE": 0.2, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.08333333, 
-      "LONGITUDE": -81.83333333, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "CONNER", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.23527778, 
-      "LONGITUDE": -81.93361111, 
-      "NWCG_GENERAL_CAUSE": "Natural"
-    }, 
-    {
-      "FIRE_NAME": "GRASSEY PRAIRIE", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.01666667, 
-      "LONGITUDE": -81.81666667, 
-      "NWCG_GENERAL_CAUSE": "Equipment and vehicle use"
-    }, 
-    {
-      "FIRE_NAME": "WILDCAT", 
-      "FIRE_SIZE": 0.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.16666667, 
-      "LONGITUDE": -81.61666667, 
-      "NWCG_GENERAL_CAUSE": "Equipment and vehicle use"
-    }, 
-    {
-      "FIRE_NAME": "'TWEEN", 
-      "FIRE_SIZE": 0.2, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.20833333, 
-      "LONGITUDE": -82.39833333, 
-      "NWCG_GENERAL_CAUSE": "Railroad operations and maintenance"
-    }, 
-    {
-      "FIRE_NAME": "FERRY STARKES", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.01833333, 
-      "LONGITUDE": -81.82, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "PITTMAN 29", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.02333333, 
-      "LONGITUDE": -81.66833333, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "EASTER", 
-      "FIRE_SIZE": 2.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.42166667, 
-      "LONGITUDE": -82.27166667, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "CHARCOAL", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.24166667, 
-      "LONGITUDE": -82.43333333, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "MIKELL", 
-      "FIRE_SIZE": 1.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.20777778, 
-      "LONGITUDE": -82.41, 
-      "NWCG_GENERAL_CAUSE": "Natural"
-    }, 
-    {
-      "FIRE_NAME": "RING", 
-      "FIRE_SIZE": 8.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.40944444, 
-      "LONGITUDE": -82.25333333, 
-      "NWCG_GENERAL_CAUSE": "Natural"
-    }, 
-    {
-      "FIRE_NAME": "CUYLER", 
-      "FIRE_SIZE": 120.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.35, 
-      "LONGITUDE": -82.24333333, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "FORT GATES 13", 
-      "FIRE_SIZE": 81.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 29.41805556, 
-      "LONGITUDE": -81.66972222, 
-      "NWCG_GENERAL_CAUSE": "Missing data/not specified/undetermined"
-    }, 
-    {
-      "FIRE_NAME": "SPRING HILL S.O. #34", 
-      "FIRE_SIZE": 4.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.32083333, 
-      "LONGITUDE": -84.3875, 
-      "NWCG_GENERAL_CAUSE": "Natural"
-    }, 
-    {
-      "FIRE_NAME": "BORROW PIT S.O. #34", 
-      "FIRE_SIZE": 0.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.38583333, 
-      "LONGITUDE": -84.46916667, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "POWER LINE", 
-      "FIRE_SIZE": 2.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.1525, 
-      "LONGITUDE": -84.6525, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "FARM", 
-      "FIRE_SIZE": 0.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.38583333, 
-      "LONGITUDE": -84.6025, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "LONESTAR S.O.#83", 
-      "FIRE_SIZE": 0.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.38583333, 
-      "LONGITUDE": -84.61916667, 
-      "NWCG_GENERAL_CAUSE": "Debris and open burning"
-    }, 
-    {
-      "FIRE_NAME": "LONESTAR2 S.O.#84", 
-      "FIRE_SIZE": 3.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 30.3875, 
-      "LONGITUDE": -84.62083333, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "0152", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.67638889, 
-      "LONGITUDE": -121.52166667, 
-      "NWCG_GENERAL_CAUSE": "Missing data/not specified/undetermined"
-    }, 
-    {
-      "FIRE_NAME": "0166", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.38722222, 
-      "LONGITUDE": -121.79527778, 
-      "NWCG_GENERAL_CAUSE": "Missing data/not specified/undetermined"
-    }, 
-    {
-      "FIRE_NAME": "0046", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.30388889, 
-      "LONGITUDE": -121.61611111, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "0047", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.30055556, 
-      "LONGITUDE": -121.60083333, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "0048", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.30055556, 
-      "LONGITUDE": -121.60083333, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "0049", 
-      "FIRE_SIZE": 2.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.26083333, 
-      "LONGITUDE": -121.50472222, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "0056", 
-      "FIRE_SIZE": 0.3, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.735, 
-      "LONGITUDE": -121.76861111, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0067", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.01333333, 
-      "LONGITUDE": -121.36527778, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0074", 
-      "FIRE_SIZE": 5.8, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.35472222, 
-      "LONGITUDE": -121.60583333, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0113", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.30777778, 
-      "LONGITUDE": -121.57055556, 
-      "NWCG_GENERAL_CAUSE": "Arson/incendiarism"
-    }, 
-    {
-      "FIRE_NAME": "0140", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.95861111, 
-      "LONGITUDE": -121.25694444, 
-      "NWCG_GENERAL_CAUSE": "Missing data/not specified/undetermined"
-    }, 
-    {
-      "FIRE_NAME": "0173", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.98111111, 
-      "LONGITUDE": -121.30083333, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0174", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.72944444, 
-      "LONGITUDE": -121.78138889, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0205", 
-      "FIRE_SIZE": 1.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.98083333, 
-      "LONGITUDE": -121.40638889, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "CALDWELL GULCH", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.49472222, 
-      "LONGITUDE": -115.29194444, 
-      "NWCG_GENERAL_CAUSE": "Natural"
-    }, 
-    {
-      "FIRE_NAME": "RECLAMATION", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.36611111, 
-      "LONGITUDE": -115.44888889, 
-      "NWCG_GENERAL_CAUSE": "Debris and open burning"
-    }, 
-    {
-      "FIRE_NAME": "THE BEGINNING", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.05972222, 
-      "LONGITUDE": -115.92472222, 
-      "NWCG_GENERAL_CAUSE": "Natural"
-    }, 
-    {
-      "FIRE_NAME": "HARDSCRABBLE SPUR", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.22416667, 
-      "LONGITUDE": -115.90277778, 
-      "NWCG_GENERAL_CAUSE": "Debris and open burning"
-    }, 
-    {
-      "FIRE_NAME": "EAST MOUNTAIN", 
-      "FIRE_SIZE": 2.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.43222222, 
-      "LONGITUDE": -115.90444444, 
-      "NWCG_GENERAL_CAUSE": "Natural"
-    }, 
-    {
-      "FIRE_NAME": "0231", 
-      "FIRE_SIZE": 0.3, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.30111111, 
-      "LONGITUDE": -120.0725, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0149", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.27555556, 
-      "LONGITUDE": -121.54444444, 
-      "NWCG_GENERAL_CAUSE": "Smoking"
-    }, 
-    {
-      "FIRE_NAME": "0165", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.50694444, 
-      "LONGITUDE": -121.63027778, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0180", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.56527778, 
-      "LONGITUDE": -121.62527778, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0189", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.53666667, 
-      "LONGITUDE": -121.43416667, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0206", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.50722222, 
-      "LONGITUDE": -121.69166667, 
-      "NWCG_GENERAL_CAUSE": "Smoking"
-    }, 
-    {
-      "FIRE_NAME": "0223", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.48194444, 
-      "LONGITUDE": -121.71166667, 
-      "NWCG_GENERAL_CAUSE": "Smoking"
-    }, 
-    {
-      "FIRE_NAME": "0250", 
-      "FIRE_SIZE": 1.0, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.35833333, 
-      "LONGITUDE": -121.59555556, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0278", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 44.30027778, 
-      "LONGITUDE": -121.56472222, 
-      "NWCG_GENERAL_CAUSE": "Smoking"
-    }, 
-    {
-      "FIRE_NAME": "0188", 
-      "FIRE_SIZE": 2.2, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.68694444, 
-      "LONGITUDE": -121.67916667, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0242", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.96638889, 
-      "LONGITUDE": -121.30583333, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "0300", 
-      "FIRE_SIZE": 0.5, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.95861111, 
-      "LONGITUDE": -121.25694444, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }, 
-    {
-      "FIRE_NAME": "ELK CREEK", 
-      "FIRE_SIZE": 0.1, 
-      "FIRE_YEAR": 2000, 
-      "LATITUDE": 43.84333333, 
-      "LONGITUDE": -115.83138889, 
-      "NWCG_GENERAL_CAUSE": "Recreation and ceremony"
-    }
-  ]
-/////////////////////////////////////////////////////////
+//Create variable with sample geoJSON data for development
+var data = {
+    "features": [
+            {
+                "geometry": {
+                    "coordinates": [
+                        -120.21166667,
+                        38.52333333
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Equipment and vehicle use",
+                    "name": "POWER",
+                    "size": 16823.0,
+                    "year": 2004
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -120.26,
+                        38.78
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Power generation/transmission/distribution",
+                    "name": "FREDS",
+                    "size": 7700.0,
+                    "year": 2004
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -111.275,
+                        33.72333333
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "THREE",
+                    "size": 16100.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -118.43833333,
+                        35.68805556
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Missing data/not specified/undetermined",
+                    "name": "NINE",
+                    "size": 1149.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -111.37972222,
+                        33.93361111
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "OAK",
+                    "size": 1300.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -111.10666667,
+                        33.55111111
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "TW0 BAR",
+                    "size": 2093.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -106.35833333,
+                        45.30833333
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "SAWMILL GULCH",
+                    "size": 1199.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -108.55888889,
+                        33.61333333
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "FORK",
+                    "size": 11936.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -105.95527778,
+                        45.44833333
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "ERICKSON SPRING",
+                    "size": 2700.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -105.03805556,
+                        38.16972222
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "MASON",
+                    "size": 11357.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -118.06777778,
+                        45.84083333
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Missing data/not specified/undetermined",
+                    "name": "BURNT CABIN",
+                    "size": 1977.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -103.39388889,
+                        44.19361111
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "RICCO",
+                    "size": 3959.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -104.17416667,
+                        44.37194444
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "CEMENT",
+                    "size": 3025.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.21,
+                        45.38805556
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "HALE GULCH",
+                    "size": 2643.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -109.19055556,
+                        33.16972222
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "SNAKE RIDGE FIRE",
+                    "size": 1900.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.72277778,
+                        45.24861111
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "STODDARD CREEK POINT",
+                    "size": 4004.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.58777778,
+                        46.3425
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "BIG SANDS",
+                    "size": 2398.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -90.96777778,
+                        48.14
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "ALPINE LAKE",
+                    "size": 1335.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -115.025,
+                        45.92333333
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "RUNNING LAKE",
+                    "size": 7404.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.63972222,
+                        45.88083333
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "CEDAR BAREFOOT",
+                    "size": 1777.5,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.90138889,
+                        46.69611111
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "LODGEPOLE HUMP",
+                    "size": 1981.5,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -113.53833333,
+                        37.17388889
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "MILL CREEK",
+                    "size": 7892.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.95833333,
+                        45.92777778
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "BOXCAR",
+                    "size": 1818.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.70666667,
+                        45.73027778
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "BEAVER JACK",
+                    "size": 7244.4,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -115.01,
+                        45.7
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "BURNT",
+                    "size": 4530.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -115.78583333,
+                        45.93222222
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "CHINA TEN",
+                    "size": 1859.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -120.35166667,
+                        39.61222222
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Missing data/not specified/undetermined",
+                    "name": "HARDING",
+                    "size": 2270.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -113.37555556,
+                        47.73305556
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Recreation and ceremony",
+                    "name": "KELLY POINT",
+                    "size": 3875.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -117.68055556,
+                        46.23444444
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Power generation/transmission/distribution",
+                    "name": "SCHOOL",
+                    "size": 52000.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -115.61611111,
+                        40.28638889
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "HASTINGS",
+                    "size": 1180.3,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.88583333,
+                        45.97472222
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "ELK CREEK",
+                    "size": 1335.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.86555556,
+                        46.02055556
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "PENNY",
+                    "size": 1067.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.70361111,
+                        45.09055556
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "NINE SHOT",
+                    "size": 20400.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.58722222,
+                        45.5325
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "REYNOLDS LAKE",
+                    "size": 4010.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -114.61638889,
+                        45.42527778
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "MUSTANG",
+                    "size": 1040.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -115.21,
+                        46.80027778
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "BLACK CANYON FACE",
+                    "size": 2000.0,
+                    "year": 2005
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -96.56363,
+                        38.15673
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Equipment and vehicle use",
+                    "name": "2",
+                    "size": 1150.0,
+                    "year": 2017
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -100.7542,
+                        41.95605
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Equipment and vehicle use",
+                    "name": "",
+                    "size": 11000.0,
+                    "year": 2017
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -99.566874,
+                        39.263895
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Equipment and vehicle use",
+                    "name": "1700003",
+                    "size": 1500.0,
+                    "year": 2017
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -99.21493,
+                        38.92777
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Equipment and vehicle use",
+                    "name": "017-065",
+                    "size": 7500.0,
+                    "year": 2017
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -99.79064,
+                        34.76083
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Missing data/not specified/undetermined",
+                    "name": "",
+                    "size": 4000.0,
+                    "year": 2008
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -102.3659,
+                        32.21779
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Natural",
+                    "name": "",
+                    "size": 3800.0,
+                    "year": 2008
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -99.606,
+                        33.176
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Missing data/not specified/undetermined",
+                    "name": "",
+                    "size": 1700.0,
+                    "year": 2008
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -100.7297,
+                        34.13717
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Smoking",
+                    "name": "WILD HOG",
+                    "size": 2300.0,
+                    "year": 2007
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -100.7182,
+                        34.08447
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Equipment and vehicle use",
+                    "name": "WILD HOG SOUTH",
+                    "size": 1200.0,
+                    "year": 2007
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -101.2561,
+                        30.31063
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Equipment and vehicle use",
+                    "name": "HUDSPETH",
+                    "size": 3555.0,
+                    "year": 2007
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -98.71917,
+                        30.40195
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Missing data/not specified/undetermined",
+                    "name": "WILLOW CITY",
+                    "size": 2000.0,
+                    "year": 2007
+                },
+                "type": "Feature"
+            },
+            {
+                "geometry": {
+                    "coordinates": [
+                        -99.1125,
+                        30.77861
+                    ],
+                    "type": "Point"
+                },
+                "properties": {
+                    "cause": "Equipment and vehicle use",
+                    "name": "ART",
+                    "size": 2800.0,
+                    "year": 2007
+                },
+                "type": "Feature"
+            }
+        ]};
 
-//Create new layer group for all fire markers
-let fireMarkers = L.layerGroup();
+// Create a new geoJSON layer with the wildfireData
+let fireMarkers = L.geoJSON(data, {
+    pointToLayer: function (features, latlng) {
+      return L.circleMarker(latlng, {
+        fillColor: "blue",
+        color: "#000",
+        weight: 0,
+        opacity: 1,
+        fillOpacity: 1});
+      },
+        onEachFeature: function (features, layer) {
+            layer.bindPopup("<h3>" + features.properties.name +
+              "</h3><hr><p>Year: " + features.properties.year + "</p>" +
+              "<p>Cause: " + features.properties.cause + "</p>");
+          }
+        }).addTo(myMap);
 
-// Loop through the wildfire data and add markers to the map
-for (let i = 0; i < wildfireData.length; i++) {
-  let lat = wildfireData[i].LATITUDE;
-  let lon = wildfireData[i].LONGITUDE;
-  let size = wildfireData[i].FIRE_SIZE / 10;
- // let markerSize = chooseSize(size);
-  let marker = L.circleMarker([lat, lon]);
-    //, {radius: markerSize
-  marker.bindPopup(`<b>Fire Name:</b> ${wildfireData[i].FIRE_NAME}<br><b>Fire Year:</b> ${wildfireData[i].FIRE_YEAR}<br><b>Cause:</b> ${wildfireData[i].NWCG_GENERAL_CAUSE}`);
-  fireMarkers.addLayer(marker);
-};
-myMap.addLayer(fireMarkers);
-
-  //Define function to select marker size based on magnitude
-  // function chooseSize(fireSize) {
-  //   if (fireSize === 0) {
-  //     return fireSize * 1
-  //   };
-  //   return fireSize * 2
-  // };
-
-let overlayMaps = {
-  Wildfires: fireMarkers
-};
+  let overlayMaps = {
+    Wildfires: fireMarkers
+  };
 
   // Create a layer control.
   // Pass it our baseMaps and overlayMaps.
@@ -861,6 +861,26 @@ let overlayMaps = {
     collapsed: false
   }).addTo(myMap);
 
+// Define a function to filter the fireMarkers layer by year with the slider
+function updateMarkerOpacity(yearRange) {
+  fireMarkers.eachLayer(function(layer) {
+    let year = layer.feature.properties.year;
+    if (year >= yearRange[0] && year <= yearRange[1]) {
+      layer.setStyle({fillOpacity: 0.8});
+    } else {
+      layer.setStyle({fillOpacity: 0});
+    }
+  });
+};
+
+// Set the initial marker opacity based on the default year range
+updateMarkerOpacity(slider.noUiSlider.get());
+
+// Add an event listener to the slider that updates the marker opacity
+slider.noUiSlider.on('update', function(values, handle) {
+  let yearRange = values.map(Number);
+  updateMarkerOpacity(yearRange);
+});
+
 fireMarkers.addTo(myMap);
 topo.addTo(myMap);
-

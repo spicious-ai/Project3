@@ -17,6 +17,7 @@ d3.json(url).then(function(data) {
     wildfireData.push(wildfire);
   }
 }
+//});
 console.dir(wildfireData, {depth: null})
 
 
@@ -41,7 +42,34 @@ let baseMaps = {
   "Topographic Map": topo
 };
 
+// Create slider
+let slider = document.getElementById("slider");
+noUiSlider.create(slider, {
+  start: [1992, 2020],
+  connect: true,
+  range: {
+    'min': 1992,
+    'max': 2020
+  },
+  format: {
+    to: function(value) {
+      return parseInt(value);
+    },
+    from: function(value) {
+      return parseInt(value);
+    }
+  }
+});
 
+// Add range values to slider display
+let rangeValues = [
+  document.getElementById('slider-range-value1'),
+  document.getElementById('slider-range-value2')
+];
+
+slider.noUiSlider.on('update', function(values, handle) {
+  rangeValues[handle].innerHTML = values[handle];
+});
 
 
 //Create new layer group for all fire markers
@@ -56,13 +84,15 @@ for (let i = 0; i < wildfireData.length; i++) {
   let marker = L.circleMarker([lat, lon], {
   color: "#000",
   fillColor: "blue",
-  fillOpacity: .50,
-  weight: .8,
-  opacity: 1,
+  fillOpacity: .8,
+  weight: 0,
+  opacity: .8,
 });
+
+//Bind pop-up to each marker
 marker.bindPopup(`<b>Fire Name:</b> ${wildfireData[i].name}<br><b>Fire Year:</b> ${wildfireData[i].year}<br><b>Cause:</b> ${wildfireData[i].cause}`);
 fireMarkers.addLayer(marker);
-}
+};
 
 let overlayMaps = {
   Wildfires: fireMarkers 
@@ -75,12 +105,31 @@ L.control.layers(baseMaps, overlayMaps, {
   collapsed: false
 }).addTo(myMap); 
 
+
+// Define a function to filter the fireMarkers layer by year with the slider
+function updateMarkerOpacity(yearRange) {
+  for (let i=0; i < wildfireData.length; i++) {
+    let fireYear = wildfireData[i].year;
+    let marker = fireMarkers.getLayers()[i];
+    if (fireYear >= yearRange[0] && fireYear <= yearRange[1]) {
+      marker.setStyle({fillOpacity: 1});
+    } else {
+      marker.setStyle({fillOpacity: 0});
+    }
+  }
+}
+
+// Set the initial marker opacity based on the default year range
+updateMarkerOpacity(slider.noUiSlider.get());
+
+// Add an event listener to the slider that updates the marker opacity
+slider.noUiSlider.on('update', function(values) {
+  let yearRange = values.map(Number);
+  updateMarkerOpacity(yearRange);
+});
+
+
 //Add base tile layers to the map
 street.addTo(myMap);
 topo.addTo(myMap);
-//
-
-
-
-
 });

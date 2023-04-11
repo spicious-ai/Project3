@@ -866,7 +866,7 @@ function updateMarkerOpacity(yearRange) {
   fireMarkers.eachLayer(function(layer) {
     let year = layer.feature.properties.year;
     if (year >= yearRange[0] && year <= yearRange[1]) {
-      layer.setStyle({fillOpacity: 0.8});
+      layer.setStyle({fillOpacity: 1});
     } else {
       layer.setStyle({fillOpacity: 0});
     }

@@ -124,7 +124,8 @@ function updateMapCause(selectedCause) {
     for (let i = 0; i < wildfireData.length; i++) {
         let fire = wildfireData[i];
         // Only show markers that match the selected cause
-        if (selectedCause === '' || fire.cause === selectedCause) {
+        if (selectedCause === '' || fire.cause === selectedCause
+        && !selectedYear || fire.year === selectedYear) {
             let marker = L.marker([fire.lat, fire.lon],{icon:fireIcon}).addTo(fireMarkers);
             marker.bindPopup('<b>' + fire.name + '</b><br>Size: ' + fire.size + ' acres' + '<br>Cause: ' + fire.cause);
         }
@@ -185,7 +186,8 @@ function updateMapYear(selectedYear) {
         let fire = wildfireData[i];
         selectedYear = Number(selectedYear)
         
-        if (!selectedYear || fire.year === selectedYear) {
+        if (!selectedYear || fire.year === selectedYear 
+            && selectedCause === '' || fire.cause === selectedCause) {
             let marker = L.marker([fire.lat, fire.lon],{icon:fireIcon}).addTo(fireMarkers);
             marker.bindPopup('<b>' + fire.name + '</b><br>Size: ' + fire.size + ' acres' + '<br>Cause: ' + fire.cause);
         }

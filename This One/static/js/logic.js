@@ -60,31 +60,6 @@ let baseMaps = {
     let fireMarkers = L.layerGroup();
 
 function createMarkers() {
-
-    
-/*
-    
-    // Loop through the wildfire data and add markers to the map
-    for (let i = 0; i < wildfireData.length; i++) {
-        let lat = wildfireData[i].lat;
-        let lon = wildfireData[i].lon;
-        let size = wildfireData[i].size / 10;
-        // let markerSize = chooseSize(size);
-        let marker = L.circle([lat, lon]);
-        //, {radius: markerSize
-        marker.bindPopup(`<b>Fire Name:</b> ${wildfireData[i].name}<br><b>Fire Year:</b> ${wildfireData[i].year}<br><b>Cause:</b> ${wildfireData[i].cause}`);
-        fireMarkers.addLayer(marker);
-    };
-    myMap.addLayer(fireMarkers);
-    */
-
-    //Define function to select marker size based on magnitude
-    // function chooseSize(fireSize) {
-    //   if (fireSize === 0) {
-    //     return fireSize * 1
-    //   };
-    //   return fireSize * 2
-    // };
     
     let overlayMaps = {
     Wildfires: fireMarkers
@@ -103,8 +78,6 @@ function createMarkers() {
     //end of Gina's code
     
 }
-
-
     
     //creating a custom fire marker icon
     
@@ -114,7 +87,6 @@ function createMarkers() {
         });
         
  function addDropDownToMap() {
-        // Dropdown menu not working
         // Create a new dropdown menu for filtering by cause
         let selectedCause = L.control({position: 'topright'});
         selectedCause.onAdd = function(map) {
@@ -151,7 +123,6 @@ function updateMapCause(selectedCause) {
     // Loop through the wildfireData array and add markers to the map based on the selected cause
     for (let i = 0; i < wildfireData.length; i++) {
         let fire = wildfireData[i];
-        //console.log(fire['cause'])
         // Only show markers that match the selected cause
         if (selectedCause === '' || fire.cause === selectedCause) {
             let marker = L.marker([fire.lat, fire.lon],{icon:fireIcon}).addTo(fireMarkers);

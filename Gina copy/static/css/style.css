@@ -1,0 +1,52 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+#map,
+body,
+html {
+  height: 100%;
+}
+
+/* Styling for the slider track */
+.noUi-connect {
+  background-color: #0a7607; /* set the color of the slider track */
+  height: 16px; /* set the height of the slider track */
+}
+
+/* Styling for the slider handles */
+.noUi-handle {
+  background-color: #033202;
+}
+
+/* Styling for the slider tooltips */
+.noUi-tooltip {
+  display: none; /* hide the tooltips */
+}
+
+#slider {
+  margin-top: 10px;
+  margin-bottom: 35px;
+  margin-left: 20px;
+  margin-right: 20px
+}
+
+#slider-container {
+  position: relative;
+}
+
+#slider-values {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 100px;
+  text-align: center;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+

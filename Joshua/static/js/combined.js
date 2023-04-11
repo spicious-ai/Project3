@@ -201,7 +201,7 @@ var fireIcon = L.icon({
     iconSize: [20, 30]
   });
   
-  // Dropdown menu not working 
+  
   // Create a new dropdown menu for filtering by cause
   let selectedCause = L.control({position: 'topright'});
   selectedCause.onAdd = function(map) {

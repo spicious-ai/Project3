@@ -7,9 +7,9 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Wildfire Leaflet Test</title>
 
-<!-- noUISlider CSS and JS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.5.1/nouislider.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.5.1/nouislider.min.js"></script>
+<!-- noUI slider CSS and JS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
 
 </head>
 
@@ -24,11 +24,17 @@
 
 <body>
 
-  <!-- The div that holds our map -->
-  <div id="map"></div>
+  <!-- The div that holds our year filter slider -->
+  <label for="slider">Filter by Year:</label>
+  <div id="slider-container">
+    <div id="slider"></div>
+    <div id="slider-values">
+      <span id="slider-range-value1"></span> - <span id="slider-range-value2"></span>
+    </div>
+  </div>
 
   <!-- The div that holds our map -->
-  <div id="slider"></div>
+  <div id="map"></div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
@@ -41,7 +47,7 @@
   <!-- <script type="text/javascript" src="static/js/config.js"></script>
 
  <!-- Our JavaScript -->
-  <script type="text/javascript" src="static/js/logic_no_api.js"></script>
+  <script type="text/javascript" src="static/js/logic.js"></script>
 </body>
 
 </html>

@@ -51,24 +51,14 @@ def fires():
     session = Session(engine)
 
     """Return a list of all fires"""
-  # Query all fires over 1000 acres
-    results = engine.execute('select FIRE_NAME, FIRE_YEAR, LATITUDE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE, NWCG_CAUSE_CLASSIFICATION from fires where  FIRE_SIZE > 1000;').all()
+    # Query all passengers
+    results = engine.execute('select FIRE_NAME, FIRE_YEAR, LATITUDE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE from fires where FIRE_SIZE > 1000').all()
 
 
     session.close()
-#Description of all properties
-'''
-FIRE_NAME - Name of the incident, from the fire report (primary) or ICS-209 report (secondary).
-FIRE_YEAR - Calendar year in which the fire was discovered or confirmed to exist.
-LATITUDE - Latitude (NAD83) for point location of the fire (decimal degrees).
-LONGITUDE - Longitude (NAD83) for point location of the fire (decimal degrees).
-FIRE_SIZE - The estimate of acres within the final perimeter of the fire.
-NWCG_GENERAL_CAUSE - Event or circumstance that started a fire or set the stage for its occurrence (Arson/incendiarism, Debris and open burning, Equipment and vehicle use, Firearms and explosives use, Fireworks, Misuse of fire by a minor, Natural, Power generation/transmission/distribution, Railroad operations and maintenance, Recreation and ceremony, Smoking, Other causes, Missing data/not specified/undetermined).
-NWCG_CAUSE_CLASSIFICATION - Broad classification of the reason the fire occurred (Human, Natural, Missing data/not specified/undetermined).
-'''
-  # Organize information into geoJSON format
+    #all_names = list(np.ravel(results))
     all_fires = []
-    for FIRE_NAME, FIRE_YEAR, LATITUDE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE, NWCG_CAUSE_CLASSIFICATION  in results:
+    for FIRE_NAME, FIRE_YEAR, LATITUDE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE  in results:
         fire_dict = {
               "type": "Feature",
               "geometry": {
@@ -79,8 +69,7 @@ NWCG_CAUSE_CLASSIFICATION - Broad classification of the reason the fire occurred
                 "name": FIRE_NAME,
                 "year": FIRE_YEAR,
                 "size": FIRE_SIZE,
-                "cause": NWCG_GENERAL_CAUSE, 
-                "cause_class": NWCG_CAUSE_CLASSIFICATION
+                "cause": NWCG_GENERAL_CAUSE
                           }
             }
         all_fires.append(fire_dict)
@@ -101,3 +90,13 @@ NWCG_CAUSE_CLASSIFICATION - Broad classification of the reason the fire occurred
 
 if __name__ == "__main__":
     app.run(port=8000, debug=True)
+
+'''
+FIRE_NAME - Name of the incident, from the fire report (primary) or ICS-209 report (secondary).
+FIRE_YEAR - Calendar year in which the fire was discovered or confirmed to exist.
+LATITUDE - Latitude (NAD83) for point location of the fire (decimal degrees).
+LONGITUDE - Longitude (NAD83) for point location of the fire (decimal degrees).
+FIRE_SIZE - The estimate of acres within the final perimeter of the fire.
+NWCG_GENERAL_CAUSE - Event or circumstance that started a fire or set the stage for its occurrence (Arson/incendiarism, Debris and open burning, Equipment and vehicle use, Firearms and explosives use, Fireworks, Misuse of fire by a minor, Natural, Power generation/transmission/distribution, Railroad operations and maintenance, Recreation and ceremony, Smoking, Other causes, Missing data/not specified/undetermined).
+NWCG_CAUSE_CLASSIFICATION - Broad classification of the reason the fire occurred (Human, Natural, Missing data/not specified/undetermined).
+'''

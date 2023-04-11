@@ -902,11 +902,11 @@ selectedCause.onAdd = function(map) {
   return div;
 };
 selectedCause.addTo(myMap);
-updateMap('');
+updateMapCause('');
 
 
 // Define function to update the map based on the selected cause
-function updateMap(selectedCause) {
+function updateMapCause(selectedCause) {
   // Clear existing markers from the fireMarkers layer group
   fireMarkers.clearLayers();
   // Loop through the wildfireData array and add markers to the map based on the selected cause

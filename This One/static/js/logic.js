@@ -1,49 +1,23 @@
-console.log("hola")
+console.log("hola senior")
 //Create an array of the flask API fires //
 var url = "http://127.0.0.1:8000/api/v1.0/fires.geojson";
 
 var wildfireData = [];
 
-d3.json(url).then(function(data) {
-    //let wildfireData = [];
-    for (let i = 0; i < data.features.length; i++) {
-        let featureArray = data.features[i];
-        for (let j = 0; j < featureArray.length; j++) {
-            let feature = featureArray[j];
-            let wildfire = {
-            cause: feature.properties.cause,
-            name: feature.properties.name,
-            year: feature.properties.year,
-            size: feature.properties.size,
-            lat: feature.geometry.coordinates[1],
-            lon: feature.geometry.coordinates[0]
-            };
-            console.log("d3 call");
-            wildfireData.push(wildfire);
-        }
-    }
-    console.dir(wildfireData, {depth: null})
-
-    createMarkers();
-    addDropDownToMap();
-    addDropDownYearsToMap();
-
-});
-    
 
 //Create a map object
 let myMap = L.map("map", {
-center: [37.09, -95.71],
-zoom: 5
+    center: [37.09, -95.71],
+    zoom: 5
 });
 console.log("map object made");
 //Create base tile layers
 let street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 });
 
 let topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+    attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 });
 
 //Create baseMaps object
@@ -51,48 +25,50 @@ let baseMaps = {
     "Street Map": street,
     "Topographic Map": topo
 };
-    
 
-    
-    /////////////////////////////////////////////////////////
 
-    //Create new layer group for all fire markers
-    let fireMarkers = L.layerGroup();
+
+/////////////////////////////////////////////////////////
+
+//Create new layer group for all fire markers
+let fireMarkers = L.layerGroup();
 
 function createMarkers() {
-    
+
     let overlayMaps = {
-    Wildfires: fireMarkers
+        Wildfires: fireMarkers
     };
-    
+
     // Create a layer control.
     // Pass it our baseMaps and overlayMaps.
     // Add the layer control to the map.
     L.control.layers(baseMaps, overlayMaps, {
-    collapsed: false
+        collapsed: false
     }).addTo(myMap);
-    
+
     fireMarkers.addTo(myMap);
     topo.addTo(myMap);
-    
+
     //end of Gina's code
-    
+
 }
-    
-    //creating a custom fire marker icon
-    
-    var fireIcon = L.icon({
-        iconUrl: 'fireicon.png',
-        iconSize: [20, 30]
-        });
-        
- function addDropDownToMap() {
-        // Create a new dropdown menu for filtering by cause
-        let selectedCause = L.control({position: 'topright'});
-        selectedCause.onAdd = function(map) {
-            let div = L.DomUtil.create('div', 'info legend');
-            div.innerHTML = `
-         <select id='cause-select' onchange='updateMapCause(this.value)'>
+
+// Joshua's code
+
+//creating a custom fire marker icon
+
+var fireIcon = L.icon({
+    iconUrl: 'fireicon.png',
+    iconSize: [20, 30]
+});
+
+function addDropDownToMap() {
+    // Create a new dropdown menu for filtering by cause
+    let selectedCause = L.control({ position: 'topright' });
+    selectedCause.onAdd = function (map) {
+        let div = L.DomUtil.create('div', 'info legend');
+        div.innerHTML = `
+         <select id='cause-select' onchange='getfilter().cause = this.value'>
              <option value=''>All Causes</option>
              <option value='Arson/incendiarism'>Arson/incendiarism</option>
              <option value='Debris and open burning'>Debris and open burning</option>
@@ -109,36 +85,20 @@ function createMarkers() {
              <option value='Missing data/not specified/undetermined'>Missing data/not specified/undetermined</option>
            </select>
          `;
-            return div;
-        };
-        selectedCause.addTo(myMap);
- }
-    
+        return div;
+    };
+    selectedCause.addTo(myMap);
+}
 
-    
-// Define function to update the map based on the selected cause
-function updateMapCause(selectedCause) {
-    // Clear existing markers from the fireMarkers layer group
-    fireMarkers.clearLayers();
-    // Loop through the wildfireData array and add markers to the map based on the selected cause
-    for (let i = 0; i < wildfireData.length; i++) {
-        let fire = wildfireData[i];
-        // Only show markers that match the selected cause
-        if (selectedCause === '' || fire.cause === selectedCause
-        && !selectedYear || fire.year === selectedYear) {
-            let marker = L.marker([fire.lat, fire.lon],{icon:fireIcon}).addTo(fireMarkers);
-            marker.bindPopup('<b>' + fire.name + '</b><br>Size: ' + fire.size + ' acres' + '<br>Cause: ' + fire.cause);
-        }
-    }
-};
-        
-function addDropDownYearsToMap() {        
+
+//adding a dropdown menu for filtering by year
+function addDropDownYearsToMap() {
     // creating a dropdown menu for filtering by year
-    let yearSelect = L.control({position: 'topright'});
-    yearSelect.onAdd = function(map) {
+    let yearSelect = L.control({ position: 'topright' });
+    yearSelect.onAdd = function (map) {
         let div = L.DomUtil.create('div', 'info legend');
         div.innerHTML = `
-        <select id='year-select' onchange='updateMapYear(this.value)'>
+        <select id='year-select' onchange='getfilter().year = this.value'>
         <option value=''>All Years</option>
         <option value='1992'>1992</option>
         <option value='1993'>1993</option>
@@ -174,28 +134,84 @@ function addDropDownYearsToMap() {
         return div;
     };
     yearSelect.addTo(myMap);
-}     
+}
 
-function updateMapYear(selectedYear) {
-    
-    // Clear existing markers from the fireMarkers layer group
-    fireMarkers.clearLayers();
-    
-    // Loop through the wildfireData array and add markers to the map based on the selected year
-    for (let i = 0; i < wildfireData.length; i++) {
-        let fire = wildfireData[i];
-        selectedYear = Number(selectedYear)
-        
-        if (!selectedYear || fire.year === selectedYear 
-            && selectedCause === '' || fire.cause === selectedCause) {
-            let marker = L.marker([fire.lat, fire.lon],{icon:fireIcon}).addTo(fireMarkers);
-            marker.bindPopup('<b>' + fire.name + '</b><br>Size: ' + fire.size + ' acres' + '<br>Cause: ' + fire.cause);
+// creating a class to filter on cause and year and update the map
+class FireFilter {
+    constructor(cause, year) {
+        this._cause = cause;
+        this._year = year;
+    }
+
+    get cause() {
+        return this._cause;
+    }
+    set cause(cause) {
+        this._cause = cause;
+        this.updateMap();
+    }
+
+    get year() {
+        return Number(this._year);
+    }
+    set year(year) {
+        this._year = year;
+        this.updateMap();
+    }
+
+    updateMap() {
+
+        // Clear existing markers from the fireMarkers layer group
+        fireMarkers.clearLayers();
+        const selectedFires = wildfireData.filter(
+            (fire) =>
+                (!this.year || fire.year === this.year) &&
+                (this.cause === "" || fire.cause === this.cause)
+        );
+
+        selectedFires.forEach((fire) => {
+            
+            let marker = L.marker([fire.lat, fire.lon], {
+                icon: fireIcon,
+            }).addTo(fireMarkers);
+            marker.bindPopup(
+                `<b>${fire.name}</b><br> Year: ${fire.year} <br>Size: ${fire.size} acres<br>Cause: ${fire.cause}`
+            );
+        });
+    }
+}
+
+//creating an instince of the class to get used in the HTML
+let filter = new FireFilter('', '');
+function getfilter() {
+    return filter;
+}
+
+// end of Joshua's code
+
+//moving the d3 call to the end of the script
+d3.json(url).then(function (data) {
+    //let wildfireData = [];
+    for (let i = 0; i < data.features.length; i++) {
+        let featureArray = data.features[i];
+        for (let j = 0; j < featureArray.length; j++) {
+            let feature = featureArray[j];
+            let wildfire = {
+                cause: feature.properties.cause,
+                name: feature.properties.name,
+                year: feature.properties.year,
+                size: feature.properties.size,
+                lat: feature.geometry.coordinates[1],
+                lon: feature.geometry.coordinates[0]
+            };
+            console.log("d3 call");
+            wildfireData.push(wildfire);
         }
     }
-};
+    console.dir(wildfireData, { depth: null })
 
-
-updateMapCause('');
-updateMapYear('');
-
-        
+    createMarkers();
+    addDropDownToMap();
+    addDropDownYearsToMap();
+    
+});

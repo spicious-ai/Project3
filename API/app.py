@@ -58,7 +58,7 @@ def fires():
     session.close()
     #all_names = list(np.ravel(results))
     all_fires = []
-    for FIRE_NAME, FIRE_YEAR, LATITUDE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE  in results:
+    for FIRE_NAME, FIRE_YEAR, LATITUDE, CONT_DATE, DISCOVERY_DATE, LONGITUDE, FIRE_SIZE, NWCG_GENERAL_CAUSE  in results:
         fire_dict = {
               "type": "Feature",
               "geometry": {
@@ -69,6 +69,8 @@ def fires():
                 "name": FIRE_NAME,
                 "year": FIRE_YEAR,
                 "size": FIRE_SIZE,
+                "discoveryDate": DISCOVERY_DATE,
+                "containmentDate": CONT_DATE,
                 "cause": NWCG_GENERAL_CAUSE
                           }
             }
@@ -97,6 +99,8 @@ FIRE_YEAR - Calendar year in which the fire was discovered or confirmed to exist
 LATITUDE - Latitude (NAD83) for point location of the fire (decimal degrees).
 LONGITUDE - Longitude (NAD83) for point location of the fire (decimal degrees).
 FIRE_SIZE - The estimate of acres within the final perimeter of the fire.
+DISCOVERY_DATE Date on which the fire was discovered or confirmed to exist.
+CONT_DATE Date on which the fire was declared contained or otherwise controlled (mm/dd/yyyy where mm=month, dd=day, and yyyy=year).
 NWCG_GENERAL_CAUSE - Event or circumstance that started a fire or set the stage for its occurrence (Arson/incendiarism, Debris and open burning, Equipment and vehicle use, Firearms and explosives use, Fireworks, Misuse of fire by a minor, Natural, Power generation/transmission/distribution, Railroad operations and maintenance, Recreation and ceremony, Smoking, Other causes, Missing data/not specified/undetermined).
 NWCG_CAUSE_CLASSIFICATION - Broad classification of the reason the fire occurred (Human, Natural, Missing data/not specified/undetermined).
 '''

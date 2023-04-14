@@ -155,7 +155,7 @@ function uMap() {
             icon: fireIcon,
         }).addTo(fireMarkers);
         marker.bindPopup(
-            `<b>${fire.name}</b><br> Year: ${fire.year} <br>Size: ${fire.size} acres<br>Cause: ${fire.cause}`
+            `<b>${fire.name}</b><br> Year: ${fire.year} <br>Size: ${fire.size} acres<br>Cause: ${fire.cause}<br>Discovery Date: ${fire.discoveryDate}<br>Containment Date: ${fire.containmentDate}<br>`
         );
     });
 }

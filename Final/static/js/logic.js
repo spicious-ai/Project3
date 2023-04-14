@@ -163,24 +163,6 @@ function uMap() {
  
 
 
-//// Define a function to filter the fireMarkers layer by year with the slider
-//function updateMarkerOpacity(yearRange) {
-//  for (let i=0; i < wildfireData.length; i++) {
-//    let fireYear = wildfireData[i].year;
-//    let marker = fireMarkers.getLayers()[i];
-//    if (fireYear >= yearRange[0] && fireYear <= yearRange[1]) {
-//      marker.setStyle({fillOpacity: 1});
-//    } else {
-//      marker.setStyle({fillOpacity: 0});
-//    }
-//  }
-//}
-
-// Set the initial marker opacity based on the default year range
-//updateMarkerOpacity(slider.noUiSlider.get());
-
-/////////////////////////////////////////////////////////
-
 //Create new layer group for all fire markers
 let fireMarkers = L.layerGroup();
 
@@ -200,11 +182,7 @@ function createMarkers() {
     fireMarkers.addTo(myMap);
     topo.addTo(myMap);
 
-    //end of Gina's code
-
 }
-
-// Joshua's code
 
 //creating a custom fire marker icon
 
@@ -292,8 +270,6 @@ function addDropDownYearsToMap() {
 //let filter = new FireFilter('', '');
 
 
-// end of Joshua's code
-
 //moving the d3 call to the end of the script
 d3.json(url).then(function (data) {
     //let wildfireData = [];
@@ -319,6 +295,8 @@ d3.json(url).then(function (data) {
 
     createMarkers();
     addDropDownToMap();
+    
+    //Slider and dropdown to filter by year. We are aware that both filter the same data, and have not added a toggle to know which is being viewed.
     addDropDownYearsToMap();
     createSlider();
     
